@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+	<meta charset="utf-8">
+	<title>Bouton Burger</title>
+
+    <style>
+    
+        body {
+            height:100vh;
+            margin:0;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+        
+        #bouton-burger {
+            width:100px;
+            height:100px;
+            border:1px solid black;
+
+            position:relative; /* Pour permettre d'accueillir des éléments enfants en position absolute */
+        }
+        
+        #bouton-burger div { /* Règles communes aux 3 barres */
+            height:10px;
+            background-color:black;
+            
+            position:absolute;
+            width:100%;
+            
+            margin-top:-5px; /* Ré-équilibrer le top, car par défaut (en prenant exemple sur la deuxième barre) c'est le haut de la barre qui se place aux 50% de la hauteur du bouton. Donc on décale de la moitié de la barre vers le haut */
+            
+            transition:top 0.5s 0.5s , transform 0.5s , opacity 0.5s 0.5s;
+            /* ici le 2eme "0.5s" appliqué à "top" et "opacity" correspond à un délai à attendre avant de déclencher la transition (sur ces propriétés) */
+        }
+        
+        #bouton-burger div:nth-child(1) { /* Désigne le premier élément enfant (div) du bouton */
+            top:10%;
+        }
+        
+        #bouton-burger div:nth-child(2) { /* Désigne le deuxième élément enfant (div) du bouton */
+            top:50%;
+        }
+        
+        #bouton-burger div:nth-child(3) { /* Désigne le second élément enfant (div) du bouton */
+            /*bottom:0;*/
+            top:90%;
+        }
+        
+        /**** GESTION DE L'ANIMATION ****/
+        
+        /* Dans cette version, on ne surveille plus le survol du bouton ni la présence d'une classe "actif", mais l'état de la case à cocher qui se trouve avant le bouton */
+        
+        #secret-checkbox {
+            display:none;
+        }
+        
+        #secret-checkbox:checked + label #bouton-burger div {
+            transition:top 0.5s , transform 0.5s 0.5s , opacity 0.5s;
+            /* Ici le délai à attendre concerne la rotation (transform) */
+        }
+        
+        #secret-checkbox:checked + label #bouton-burger div:nth-child(1) {  /* Désigne le 1er enfant du bouton, lorsque le bouton est survolé */
+            top:50%;
+            transform:rotate(45deg);
+            
+        }
+        
+        #secret-checkbox:checked + label #bouton-burger div:nth-child(2) {
+            opacity:0;
+        }
+        
+        #secret-checkbox:checked + label #bouton-burger div:nth-child(3) {
+            top:50%;
+            transform:rotate(-45deg);
+            
+        }
+        
+        /* Observons en détail le sélecteur suivant :
+        
+        input[type="checkbox"]:checked + label #bouton-burger {}
+        
+        Si on décompose :
+        
+        input[type="checkbox"] -> Un input dont l'attribut "type" est "checkbox"
+        
+        :checked -> cet input doit avoir l'attribut "checked"
+        
+        + -> on cherche un élément situé immédiatement après ce input
+        
+        label #bouton-burger -> ce qu'on cherche au final est #bouton-burger, situé dans un label
+        
+        */
+        
+    </style>
+
+</head>
+
+<body>
+    
+    <!-- Case a cocher invisible, dont on se servira pour garder trace de deux états possibles (coché ou non) -->
+    <input type = "checkbox" id = "secret-checkbox">
+    
+    <!-- On relie un label à la case à cocher, qui englobe notre bouton. Résultat : un clic sur le bouton actionnera la case à cocher -->
+    <label for = "secret-checkbox">
+        
+        <div id = "bouton-burger">
+
+            <div></div>
+
+            <div></div>
+
+            <div></div>
+
+        </div>
+        
+    </label>
+    
+</body>
+
+</html>
